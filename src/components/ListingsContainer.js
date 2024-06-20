@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ListingCard from './ListingCard'
 
-function ListingsContainer() {
+function ListingsContainer({ search, sort }) {
   const [listings, setListings] = useState(null)
 
   useEffect(() => {
@@ -13,13 +13,20 @@ function ListingsContainer() {
   const handleDeleteListing = (listingToDelete) => {
     setListings(listings.filter((listing) => listing.id !== listingToDelete))
   }
+  const executeSearch = () => {
+    const searchLower = search.toLowerCase()
+    return listings.filter((listing) => listing.description.toLowerCase().includes(searchLower))
+  }
 
-  if (!listings) return <h1>Loading...</h1>
+  const searchList = search.length > 0 ? executeSearch() : listings
+  const sortList = sort ? [...searchList].sort((a, b) => a.location.localeCompare(b.location)) : searchList
+
+  if (!searchList) return <h1>Loading...</h1>
 
   return (
     <main>
       <ul className='cards'>
-        {listings.map((listing) => {
+        {sortList.map((listing) => {
           return (
             <ListingCard
               key={`listing-${listing.id}`}
