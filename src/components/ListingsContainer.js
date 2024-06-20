@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import ListingCard from './ListingCard'
 
-function ListingsContainer({ search, sort, newListingForm }) {
+function ListingsContainer({ search, sort, submitTrigger }) {
   const [listings, setListings] = useState(null)
 
   useEffect(() => {
     fetch('http://localhost:6001/listings')
       .then((res) => res.json())
       .then((data) => setListings(data))
-  }, [newListingForm])
+  }, [submitTrigger])
 
   const handleDeleteListing = (listingToDelete) => {
     setListings(listings.filter((listing) => listing.id !== listingToDelete))

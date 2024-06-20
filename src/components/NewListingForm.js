@@ -22,7 +22,15 @@ function NewListingForm({ handleFormSubmitted }) {
       body: JSON.stringify(form),
     })
       .then((res) => res.json())
-      .then(() => handleFormSubmitted(form))
+      .then(handleFormSubmitted)
+      .then(() => {
+        setForm({
+          description: '',
+          image: '',
+          location: '',
+        })
+      })
+      .catch((error) => alert(error))
   }
 
   return (
