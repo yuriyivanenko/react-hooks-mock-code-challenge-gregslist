@@ -1,8 +1,18 @@
 import React, { useState } from 'react'
 
-function ListingCard({ listingInfo: { description, image, location } }) {
+function ListingCard({ listingInfo: { id, description, image, location }, handleDeleteListing }) {
   const [favorite, setFavorite] = useState(false)
   const handleFavoriteClick = () => setFavorite(!favorite)
+
+  const handleDeleteClick = () => {
+    fetch(`http://localhost:6001/listings/${id}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then((res) => res.json())
+      .then(() => handleDeleteListing(id))
+      .catch((error) => alert(error))
+  }
 
   return (
     <li className='card'>
@@ -22,7 +32,9 @@ function ListingCard({ listingInfo: { description, image, location } }) {
         )}
         <strong>{description}</strong>
         <span> · {location}</span>
-        <button className='emoji-button delete'>🗑</button>
+        <button className='emoji-button delete' onClick={handleDeleteClick}>
+          🗑
+        </button>
       </div>
     </li>
   )
